@@ -8,7 +8,10 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_community.chat_models import ChatOllama
 from langchain_core.output_parsers import StrOutputParser
 
-PROMPT_FILE = r"E:\Inatel\Projetos\oai-anomaly-detection\notebooks\Prompt - secur.txt"
+PROMPT_FILE = r"E:\Projetos\llm_security\src\Prompt - secur.txt"
+path_dataset = r'E:\Projetos\llm_security\dataset'
+path_models = r'E:\Projetos\llm_security\models'
+
 MODEL_NAME = "phi4"
 
 # Carregar prompt do sistema (especialista em segurança)
@@ -41,11 +44,11 @@ def model_response(user_query, chat_history=None):
 # Carregar LLM ao abrir o app
 load_llm()
 
-# Carregar dados do pipeline ML
-df = pd.read_parquet('test_net.parquet')
+
+df = pd.read_parquet(f'{path_dataset}/test_net.parquet')
 features_to_use = ['protocol_type', 'service', 'flag', 'src_bytes', 'dst_bytes']
-preprocessor = joblib.load('preprocessor_model.joblib')
-modelo = joblib.load('gradient_boosting_model.joblib')
+preprocessor = joblib.load(f'{path_models}/preprocessor_model.joblib')
+modelo = joblib.load(f'{path_models}/gradient_boosting_model.joblib')
 
 def render_badge(label, mapping={0: 'Normal', 1: 'Ataque'}):
     color = '#13c26b' if label == 0 else '#ff2c2c'
